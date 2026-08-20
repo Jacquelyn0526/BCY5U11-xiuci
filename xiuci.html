@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="zh-MY">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五年级华文修辞手法巩固自习网</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Noto Sans SC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f3f4f6;
+            touch-action: manipulation;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .animate-bounce-short {
+            animation: bounce 0.6s ease infinite alternate;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Header Navbar -->
+    <header class="bg-gradient-to-r from-teal-600 via-indigo-600 to-purple-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="bg-white/20 p-2 rounded-lg"><i class="fa-solid fa-graduation-cap text-yellow-300 text-xl"></i></span>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">修辞手法巩固自习网</h1>
+                    <p class="text-xs text-teal-100">KSSR Semakan 五年级华文 (附 BM 翻译与语音)</p>
+                </div>
+            </div>
+            <button onclick="resetAllProgress()" class="text-xs bg-white/10 hover:bg-white/20 px-2 py-1 rounded border border-white/20 transition flex items-center">
+                <i class="fa-solid fa-rotate-right mr-1"></i>重置
+            </button>
+        </div>
+        
+        <!-- Navigation Stepper Tabs (Horizontal Scrollable for Mobile) -->
+        <nav class="bg-slate-900/40 backdrop-blur px-2 py-2 border-t border-white/10">
+            <div class="max-w-md mx-auto flex items-center space-x-2 overflow-x-auto hide-scrollbar text-xs font-medium px-1" id="navTabs">
+                <!-- Navigation tabs populated via JS -->
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-md mx-auto w-full px-4 py-5 flex-grow">
+        
+        <!-- View 0: Study / Tutorial Section -->
+        <section id="viewTutorial" class="space-y-6">
+            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-xl shadow-sm">
+                <h2 class="font-bold text-indigo-900 text-base flex items-center">
+                    <i class="fa-solid fa-book-open text-indigo-600 mr-2"></i> 学习天地：五大修辞手法
+                </h2>
+                <p class="text-xs text-indigo-700 mt-1">先仔细阅读解说与 🇲🇾 马来文翻译，并点击 🔊 语音按钮听取华文发音吧！</p>
+            </div>
+
+            <div id="tutorialCardsContainer" class="space-y-5">
+                <!-- Tutorial Cards will be dynamically inserted here -->
+            </div>
+
+            <button onclick="unlockAndGoNext(0)" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg flex items-center justify-center space-x-2 active:scale-95 transition transform">
+                <span>准备好了，开始【评估一】</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </section>
+
+        <!-- Generic Quiz Container View (Used for Assessment 1, 2, 3, 4) -->
+        <section id="viewQuiz" class="hidden space-y-4">
+            <!-- Quiz Header Info -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+                <div>
+                    <span id="quizBadge" class="bg-teal-100 text-teal-800 text-xs font-bold px-2.5 py-1 rounded-full">评估一</span>
+                    <h3 id="quizTitle" class="font-bold text-slate-800 text-base mt-1">听读辨析修辞手法</h3>
+                </div>
+                <div class="text-right">
+                    <div class="text-xs text-slate-400">进度</div>
+                    <div class="text-sm font-bold text-indigo-600"><span id="quizCurrentIndex">1</span> / <span id="quizTotalCount">10</span></div>
+                </div>
+            </div>
+
+            <!-- Quiz Progress Bar -->
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div id="quizProgressBar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 10%"></div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="questionCard" class="bg-white p-5 rounded-2xl shadow-md border border-slate-200 space-y-4">
+                <!-- Dynamic Content Rendered Here -->
+            </div>
+
+            <!-- Quiz Controls / Feedback Area -->
+            <div id="quizFeedback" class="hidden p-4 rounded-xl text-center text-sm font-bold animate-fade-in"></div>
+
+            <button id="btnNextQuestion" onclick="submitAnswerOrNext()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md active:scale-95 transition flex items-center justify-center space-x-2">
+                <span>确认答案</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </section>
+
+        <!-- Quiz Result / Retry Modal -->
+        <section id="viewQuizResult" class="hidden space-y-5 text-center">
+            <div id="resultBox" class="bg-white p-6 rounded-3xl shadow-xl border border-slate-200 space-y-4">
+                <div id="resultIcon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl"></div>
+                <h3 id="resultTitle" class="text-2xl font-bold"></h3>
+                <p id="resultDesc" class="text-sm text-slate-600"></p>
+                
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1">
+                    <div class="text-xs text-slate-400">本次得分</div>
+                    <div class="text-3xl font-extrabold text-indigo-600" id="resultScore">0 / 0</div>
+                    <div class="text-xs font-semibold" id="resultStatusTag"></div>
+                </div>
+
+                <div class="pt-2 space-y-2" id="resultActions">
+                    <!-- Action buttons dynamically inserted -->
+                </div>
+            </div>
+        </section>
+
+        <!-- View 5: Final Report Card (成绩单) -->
+        <section id="viewReportCard" class="hidden space-y-5">
+            <!-- Notice Banner for Screenshot Submission -->
+            <div class="bg-amber-50 border-2 border-amber-300 p-4 rounded-2xl shadow-sm text-amber-900 flex items-start space-x-3">
+                <i class="fa-solid fa-camera text-2xl text-amber-600 mt-0.5"></i>
+                <div>
+                    <h4 class="font-bold text-sm">提交作业提示：</h4>
+                    <p class="text-xs mt-0.5 leading-relaxed">恭喜你完成所有练习！请在下方输入你的名字，然后<strong class="underline text-amber-800">截图此页面</strong>发送给华文老师检查哦！</p>
+                </div>
+            </div>
+
+            <!-- Report Card Frame -->
+            <div class="bg-white rounded-3xl shadow-2xl border-4 border-indigo-500 overflow-hidden relative" id="reportCardContent">
+                <!-- Decorative Badge Corner -->
+                <div class="absolute -right-12 -top-12 bg-gradient-to-br from-yellow-400 to-amber-500 w-32 h-32 rotate-45 flex items-end justify-center pb-3 shadow-md">
+                    <i class="fa-solid fa-award text-white text-2xl -rotate-45"></i>
+                </div>
+
+                <div class="p-6 space-y-5">
+                    <!-- Report Card Title Header -->
+                    <div class="text-center space-y-1 border-b pb-4">
+                        <span class="bg-indigo-100 text-indigo-800 font-bold text-xs px-3 py-1 rounded-full">KSSR 五年级华文</span>
+                        <h2 class="text-2xl font-black text-slate-800">修辞手法自习成绩单</h2>
+                        <p class="text-xs text-slate-400" id="reportDate">完成日期：2026-08-20</p>
+                    </div>
+
+                    <!-- Student Name Input Box -->
+                    <div class="bg-indigo-50/60 p-3.5 rounded-2xl border border-indigo-100">
+                        <label class="block text-xs font-bold text-indigo-900 mb-1">学生姓名：</label>
+                        <input type="text" id="studentNameInput" placeholder="点击此处输入你的名字..." class="w-full bg-white border border-indigo-200 rounded-xl px-3 py-2 text-sm font-bold text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <!-- Score Breakdown Table -->
+                    <div class="space-y-2.5">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">各项评估成绩汇总</h4>
+                        <div id="reportBreakdown" class="space-y-2">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Total Score Summary Box -->
+                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-4 text-white text-center shadow-lg">
+                        <div class="text-xs text-indigo-100 font-medium">修辞大师总评</div>
+                        <div class="text-2xl font-black my-1" id="reportMasterTitle">金牌修辞小大师 🌟</div>
+                        <div class="text-xs text-indigo-200">综合通关得分：<span id="reportTotalScore" class="font-bold text-white text-sm">40/40</span></div>
+                    </div>
+
+                    <!-- Teacher Sign Area -->
+                    <div class="pt-2 border-t border-dashed border-slate-200 flex justify-between items-end text-xs text-slate-400">
+                        <div>
+                            <p>指导老师：华文科任老师</p>
+                            <p>平台：手机端自习巩固系统</p>
+                        </div>
+                        <div class="text-right font-bold text-emerald-600">
+                            <i class="fa-solid fa-circle-check mr-1"></i>考查合格
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex space-x-3">
+                <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center space-x-1 shadow">
+                    <i class="fa-solid fa-arrow-up"></i>
+                    <span>返回顶部</span>
+                </button>
+                <button onclick="resetAllProgress()" class="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center space-x-1 shadow">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    <span>重新练习</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-center text-xs py-4 px-4 border-t border-slate-800">
+        <p>马来西亚 KSSR Semakan 五年级华文修辞手法线上自习课件</p>
+        <p class="text-[10px] text-slate-500 mt-1">支持：比喻 · 比拟 · 夸张 · 引用 · 反复 | 语音辅助学习</p>
+    </footer>
+
+    <!-- Custom Dialog / Modal for Reset Confirmation -->
+    <div id="resetModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-xs w-full p-5 space-y-4 shadow-xl text-center">
+            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-slate-800 text-base">重置学习进度？</h3>
+                <p class="text-xs text-slate-500 mt-1">此操作将清空所有已做过的评估记录与成绩，确定要重置吗？</p>
+            </div>
+            <div class="flex space-x-2 pt-1">
+                <button onclick="closeResetModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl text-xs font-bold transition">取消</button>
+                <button onclick="confirmResetAllProgress()" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl text-xs font-bold transition">重置进度</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg z-50 transition-opacity">
+        <span id="toastMsg"></span>
+    </div>
+
+    <script>
+        // Global Application State Variables
+        let unlockedSteps = [true, false, false, false, false, false];
+        let quizScores = [0, 0, 0, 0, 0];
+        let currentStep = 0;
+        let currentQuizIndex = 0;
+        let currentQuizData = [];
+        let currentScore = 0;
+        let currentSelectedOption = null;
+
+        const navConfig = [
+            { label: "学习天地", icon: "fa-book-open" },
+            { label: "评估一", icon: "fa-list-check" },
+            { label: "评估二", icon: "fa-code-compare" },
+            { label: "评估三", icon: "fa-pen-to-square" },
+            { label: "评估四", icon: "fa-square-check" },
+            { label: "成绩单", icon: "fa-award" }
+        ];
+
+        // 1. Data Source: Tutorial Content with 5 Rhetoric Devices + Malay Translations
+        const tutorialData = [
+            {
+                type: "比喻",
+                bmType: "Kiasan / Simile",
+                icon: "fa-shapes",
+                color: "indigo",
+                desc: "用具有相似特征的具体事物（喻体）来描绘或说明另一个事物（主体）。经常使用**“像”、“好像”、“仿佛”、“犹如”、“宛如”**等比喻词。",
+                examples: [
+                    { zh: "弯弯的月亮**像**一把小镰刀挂在夜空。", bm: "Bulan sabit yang melengkung kelihatan seperti sabit kecil tergantung di langit malam." },
+                    { zh: "老师的教诲**犹如**春雨，滋润了我们的心田。", bm: "Ajaran guru bagaikan hujan musim bunga yang menyiram jiwa kami." },
+                    { zh: "弟弟的脸蛋红彤彤的，**像**一个熟透的大苹果。", bm: "Pipi adik merah menyala, seperti sebiji epal besar yang masak." },
+                    { zh: "阳光下，露珠**仿佛**一颗颗晶莹剔透的珍珠。", bm: "Di bawah sinar matahari, titisan embun seolah-olah mutiara yang jernih dan bersinar." },
+                    { zh: "字典**就像**一位不会说话的老师，随时解答我们的难题。", bm: "Kamus adalah seperti seorang guru yang tidak berkata-kata, sentiasa menjawab kemusykilan kita." }
+                ]
+            },
+            {
+                type: "比拟",
+                bmType: "Personifikasi / Personification",
+                icon: "fa-face-smile",
+                color: "rose",
+                desc: "把物当人来写（拟人），赋予事物人的动作、情感或语言；或把人当物、把甲物当乙物来写（拟物）。",
+                examples: [
+                    { zh: "顽皮的风儿吹跑了小姑娘的帽子。", bm: "Angin yang nakal telah menerbangkan topi budak perempuan itu." },
+                    { zh: "花儿在晨风中摇曳，向我们微笑点头。", bm: "Bunga-bunga bergoyang dalam angin pagi, tersenyum dan mengangguk kepada kami." },
+                    { zh: "鸟儿在枝头欢快地歌唱，宣告新一天的到来。", bm: "Burung-burung menyanyi riang di dahan, mengumumkan ketibaan hari yang baru." },
+                    { zh: "闹钟清脆地喊叫着，催促我赶紧起床上学。", bm: "Jam loceng menjerit dengan nyaring, menggesa saya agar segera bangun ke sekolah." },
+                    { zh: "小溪唱着快乐的歌儿，奔向辽阔的大海。", bm: "Anak sungai menyanyikan lagu yang gembira, mengalir menuju ke laut yang luas." }
+                ]
+            },
+            {
+                type: "夸张",
+                bmType: "Hiperbola / Exaggeration",
+                icon: "fa-bullhorn",
+                color: "amber",
+                desc: "为了达到某种强烈的表达效果，故意对事物的形象、数量、特征、程度等进行**扩大**或**缩小**的描述。",
+                examples: [
+                    { zh: "这间房间小得连一只脚都放不下。", bm: "Bilik ini sangat kecil sehingga sebelah kaki pun tidak muat diletakkan." },
+                    { zh: "听了这个好消息，他高兴得飞上了天。", bm: "Mendengar berita baik ini, dia begitu gembira sehingga terbang ke langit." },
+                    { zh: "教室里安静得连一根针掉在地上都能听见。", bm: "Bilik darjah sangat sunyi sehingga bunyi sebatang jarum jatuh ke lantai pun boleh didengar." },
+                    { zh: "烈日当下，大地热得快要燃烧起来了。", bm: "Di bawah terik matahari, bumi begitu panas seolah-olah hampir terbakar." },
+                    { zh: "他口渴得能喝干一条河里的水。", bm: "Dia terlalu dahaga sehingga mampu meminum habis air di dalam sebatang sungai." }
+                ]
+            },
+            {
+                type: "引用",
+                bmType: "Sipatan / Kutipan / Quotation",
+                icon: "fa-quote-left",
+                color: "emerald",
+                desc: "在句子中直接或间接引用现成的成语、谚语、俗语、格言、名言或诗句等，以增强说服力和表达效果。",
+                examples: [
+                    { zh: "正所谓“**失败乃成功之母**”，我们不能因为一次挫折就放弃。", bm: "Seperti kata pepatah \"Kegagalan ialah ibu kejayaan\", kita tidak boleh berputus asa kerana satu kegagalan." },
+                    { zh: "爷爷常常叮嘱我：“**少壮不努力，老大徒伤悲**”，要珍惜时光。", bm: "Datuk sering menasihati saya: \"Masa muda tidak berusaha, masa tua menyesal\", kita perlu menghargai masa." },
+                    { zh: "“**千里之行，始于足下**”，良好的习惯需要从现在开始养成。", bm: "\"Perjalanan ribuan batu bermula dengan langkah pertama\", tabiat yang baik perlu dipupuk dari sekarang." },
+                    { zh: "老师用“**饮水思源**”来提醒我们要感恩身边帮助过我们的人。", bm: "Guru menggunakan peribahasa \"Mengenang jasa\" untuk mengingatkan kami agar bersyukur kepada orang yang membantu." },
+                    { zh: "俗话说“**一分耕耘，一分收获**”，付出努力才能获得好成绩。", bm: "Seperti kata pepatah \"Di mana ada usaha, di situ ada kejayaan\", usaha gigih barulah membawa hasil yang baik." }
+                ]
+            },
+            {
+                type: "反复",
+                bmType: "Pengulangan / Repetition",
+                icon: "fa-repeat",
+                color: "cyan",
+                desc: "为了突出某种强烈的思想感情，或强调某个意思，有意**重复使用某些相同的词语、短语或句子**。",
+                examples: [
+                    { zh: "盼望着，盼望着，东风来了，春天的脚步近了。", bm: "Tertunggu-tunggu, tertunggu-tunggu, angin timur telah tiba, langkah musim bunga semakin dekat." },
+                    { zh: "默默地，默默地，他用勤劳的双手的抚平了岁月的痕迹。", bm: "Secara senyap-senyap, secara senyap-senyap, dia menggunakan tangannya yang rajin untuk meratakan jejak masa." },
+                    { zh: "听，风在吹；听，雨在下。", bm: "Dengar, angin sedang bertiup; dengar, hujan sedang turun." },
+                    { zh: "更加努力，更加拼搏，我们才能迎向美好的未来。", bm: "Lebih berusaha, lebih berjuang, barulah kita dapat menyambut masa depan yang indah." },
+                    { zh: "再见了，敬爱的老师！再见了，亲爱的母校！", bm: "Selamat tinggal, guru yang dihomati! Selamat tinggal, sekolah yang dikasihi!" }
+                ]
+            }
+        ];
+
+        // 2. Data Source: Quiz Assessments Data with BM Translations (10 questions each)
+        const quiz1Data = [
+            { question: "春风轻轻地抚摸着大地，唤醒了沉睡的万物。", bm: "Angin musim bunga mengusap bumi dengan lembut, mengejutkan segala makhluk yang sedang tidur.", answer: "比拟", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "俗话说：“光阴似箭，日月如梭”，我们要珍惜宝贵的时间。", bm: "Seperti kata pepatah: \"Masa itu emas\", kita mesti menghargai masa yang berharga.", answer: "引用", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "他的声音洪亮极了，简直可以把屋顶震飞。", bm: "Suaranya sangat lantang, seolah-olah boleh menerbangkan bumbung rumah.", answer: "夸张", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "水滴在叶子上滚动，就像一颗颗闪闪发亮的钻石。", bm: "Titisan air bergolek di atas daun, bagaikan berlian yang bersinar-sinar.", answer: "比喻", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "盼望着，盼望着，学校的假期终于来到了！", bm: "Tertunggu-tunggu, tertunggu-tunggu, cuti sekolah akhirnya telah tiba!", answer: "反复", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "树叶在风中摇曳，向过往的行人伸出手打招呼。", bm: "Daun-daun bergoyang dalam angin, menghulurkan tangan menyapa orang yang lalu-lalang.", answer: "比拟", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "古人云：“少壮不努力，老大徒伤悲。”", bm: "Orang tua-tua berkata: \"Masa muda tidak berusaha, masa tua menyesal.\"", answer: "引用", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "老师的恩情比天还要高，比海还要深。", bm: "Jasa guru lebih tinggi daripada langit, lebih dalam daripada laut.", answer: "夸张", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "走着，走着，不知不觉我们已经来到了山顶。", bm: "Berjalan, berjalan, tanpa disedari kami telah sampai ke puncak gunung.", answer: "反复", options: ["比喻", "比拟", "夸张", "引用", "反复"] },
+            { question: "弯弯的月亮宛如一把金黄的小镰刀。", bm: "Bulan sabit yang melengkung bagaikan sabit kecil keemasan.", answer: "比喻", options: ["比喻", "比拟", "夸张", "引用", "反复"] }
+        ];
+
+        const quiz2Data = [
+            {
+                prompt: "例句：“天上的星星像小眼睛一闪一闪的。”（比喻）",
+                bmPrompt: "Contoh: \"Bintang di langit berkelip-kelip seperti mata kecil.\" (Kiasan)",
+                question: "请选出与例句【修辞手法相同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang sama (相同的修辞手法)</strong> dengan contoh ayat:",
+                answerIndex: 2,
+                options: [
+                    "荷叶是蛙泳选手的舞台。",
+                    "这一阵风吹过来，冷得我血液都快凝固了。",
+                    "远处的瀑布犹如一条洁白的银丝挂在山间。",
+                    "常言道：“天下无难事，只怕有心人。”"
+                ],
+                bmOptions: [
+                    "Daun teratai ialah pentas bagi perenang gaya dada.",
+                    "Angin ini bertiup, sehinggakan darah saya hampir membeku.",
+                    "Air terjun di kejauhan bagaikan seutas benang perak putih tergantung di celah gunung.",
+                    "Kata orang: \"Tiada yang mustahil jika ada kemahuan.\""
+                ]
+            },
+            {
+                prompt: "例句：“这块石头重得连一百个大力士也搬动不了。”（夸张）",
+                bmPrompt: "Contoh: \"Batu ini sangat berat sehinggakan 100 orang kuat pun tidak dapat mengalihkannya.\" (Hiperbola)",
+                question: "请选出与例句【修辞手法相同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang sama (相同的修辞手法)</strong> dengan contoh ayat:",
+                answerIndex: 1,
+                options: [
+                    "雨点在伞面上跳起了欢乐的舞蹈。",
+                    "他着急得心快要跳出胸膛来了。",
+                    "大熊猫圆滚滚的，可爱得像个大绒毛玩具。",
+                    "妈妈常说：“一滴水也能折射出太阳的光辉。”"
+                ],
+                bmOptions: [
+                    "Titisan hujan menari riang di atas payung.",
+                    "Dia sangat cemas sehingga jantungnya hampir melompat keluar dari dada.",
+                    "Panda gergasi itu bulat dan comel seperti mainan boneka yang besar.",
+                    "Ibu sering berkata: \"Setitik air pun boleh memantulkan cahaya matahari.\""
+                ]
+            },
+            {
+                prompt: "例句：“鸟儿在树梢上互相问候，谈笑风生。”（比拟）",
+                bmPrompt: "Contoh: \"Burung-burung di puncak pokok saling menyapa dan berbual mesra.\" (Personifikasi)",
+                question: "请选出与例句【修辞手法不同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang berbeza (不同的修辞手法)</strong> dengan contoh ayat:",
+                answerIndex: 1,
+                options: [
+                    "太阳公公露出了慈祥的微笑。",
+                    "太阳红彤彤的，像个巨大的火球挂在空中。",
+                    "露珠在花瓣上调皮地打滚。",
+                    "海浪拍打着海岸，唱着高昂的战歌。"
+                ],
+                bmOptions: [
+                    "Matahari tersenyum mesra.",
+                    "Matahari merah menyala, seperti bola api gergasi tergantung di udara.",
+                    "Titisan embun berguling dengan nakal di atas kelopak bunga.",
+                    "Ombak menghempas pantai, menyanyikan lagu perang yang bersemangat."
+                ]
+            },
+            {
+                prompt: "例句：“古人说：‘温故而知新’，复习是非常重要的。”（引用）",
+                bmPrompt: "Contoh: \"Orang terdahulu berkata: 'Mengulang kaji menghasilkan pengetahuan baru'\" (Sipatan)",
+                question: "请选出与例句【修辞手法相同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang sama (相同的修辞手法)</strong>与例句:",
+                answerIndex: 0,
+                options: [
+                    "常言道：“一分耕耘，一分收获”，付出才有回报。",
+                    "窗外的大树张开双臂迎接温暖的阳光。",
+                    "他的肚子饿得能吞下一头牛。",
+                    "细雨像银针一样密密地织着。"
+                ],
+                bmOptions: [
+                    "Kata orang: \"Di mana ada usaha, di situ ada kejayaan\".",
+                    "Pokok besar di luar jendela membuka lengan menyambut sinar matahari yang hangat.",
+                    "Perutnya sangat lapar sehingga mampu menelan seekor lembu.",
+                    "Hujan renyai bagaikan jarum perak yang ditenun rapat."
+                ]
+            },
+            {
+                prompt: "例句：“欢呼吧，欢呼吧，我们终于赢得了最后的胜利！”（反复）",
+                bmPrompt: "Contoh: \"Bersoraklah, bersoraklah, kita akhirnya memenangi kemenangan terakhir!\" (Pengulangan)",
+                question: "请选出与例句【修辞手法相同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang sama (相同的修辞手法)</strong> dengan contoh ayat:",
+                answerIndex: 0,
+                options: [
+                    "飞吧，飞吧，小鸟向着广阔的蓝天飞去。",
+                    "小鸟在蓝天中像快乐的天使一样飞行。",
+                    "小鸟高兴得能一飞冲天直达月球。",
+                    "正所谓：“海阔凭鱼跃，天高任鸟飞”。"
+                ],
+                bmOptions: [
+                    "Terbanglah, terbanglah, burung kecil terbang ke langit yang luas.",
+                    "Burung kecil terbang di langit seperti malaikat yang gembira.",
+                    "Burung kecil begitu gembira sehingga boleh terbang terus ke bulan.",
+                    "Seperti kata peribahasa: \"Langit yang luas membolehkan burung terbang bebas\"."
+                ]
+            },
+            {
+                prompt: "例句：“她的笑容比蜜还要甜。”（夸张）",
+                bmPrompt: "Contoh: \"Senyumannya lebih manis daripada madu.\" (Hiperbola)",
+                question: "请选出与例句【修辞手法不同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang berbeza (不同的修辞手法)</strong>与例句:",
+                answerIndex: 2,
+                options: [
+                    "这个瓜甜得连蚂蚁都会被迷倒。",
+                    "他跑得快如闪电，瞬间就消失了。",
+                    "老师正如明灯，照亮我们前进的方向。",
+                    "我巴不得一步跨到学校。"
+                ],
+                bmOptions: [
+                    "Tembikai ini sangat manis sehingga semut pun terpukau.",
+                    "Dia berlari pantas bagai kilat, hilang dalam sekelip mata.",
+                    "Guru bagaikan pelita, menerangi jalan kita ke hadapan.",
+                    "Saya teringin sangat hendak melangkah sampai ke sekolah dengan satu langkah."
+                ]
+            },
+            {
+                prompt: "例句：“小溪唱着欢快的歌儿奔向大海。”（比拟）",
+                bmPrompt: "Contoh: \"Anak sungai menyanyikan lagu riang sepanjang jalan menuju ke laut.\" (Personifikasi)",
+                question: "请选出与例句【修辞手法相同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang sama (相同的修辞手法)</strong>与例句:",
+                answerIndex: 0,
+                options: [
+                    "大树伸出温暖的双臂庇护着小花小草。",
+                    "大树像一把巨大的绿色雨伞。",
+                    "大树高得连云朵都被扎破了。",
+                    "俗话说：“前人种树，后人乘凉”。"
+                ],
+                bmOptions: [
+                    "Pokok besar menghulurkan lengan yang hangat melindungi bunga dan rumput.",
+                    "Pokok besar seperti payung hijau yang gergasi.",
+                    "Pokok besar sangat tinggi sehingga awan pun tertebuk.",
+                    "Seperti kata pepatah: \"Orang terdahulu menanam pokok, orang kemudian menikmati teduhan\"."
+                ]
+            },
+            {
+                prompt: "例句：“读呀，读呀，他完全沉浸在书本的世界里。”（反复）",
+                bmPrompt: "Contoh: \"Membacalah, membacalah, dia tenggelam sepenuhnya dalam dunia buku.\" (Pengulangan)",
+                question: "请选出与例句【修辞手法不同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang berbeza (不同的修辞手法)</strong>与例句:",
+                answerIndex: 2,
+                options: [
+                    "等呀，等呀，公交车终于缓缓驶来了。",
+                    "跑吧，跑吧，向着胜利的终点线冲刺吧！",
+                    "这间小木屋小得连一只猫都住不下。",
+                    "听呀，听呀，那是动听的虫鸣声。"
+                ],
+                bmOptions: [
+                    "Menunggu, menunggu, bas akhirnya tiba secara perlahan.",
+                    "Berlarilah, berlarilah, memecut ke arah garisan penamat!",
+                    "Pondok kayu ini sangat kecil sehingga seekor kucing pun tidak muat.",
+                    "Dengarlah, dengarlah, itulah bunyi serangga yang merdu."
+                ]
+            },
+            {
+                prompt: "例句：“字典就像一位不会说话的老师。”（比喻）",
+                bmPrompt: "Contoh: \"Kamus seperti seorang guru yang tidak berkata-kata.\" (Kiasan)",
+                question: "请选出与例句【修辞手法相同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang sama (相同的修辞手法)</strong>与例句:",
+                answerIndex: 1,
+                options: [
+                    "字典向我们默默倾吐着知识的秘密。",
+                    "细雨如丝，密密地斜织着。",
+                    "这本字典重得像一座大山一样。",
+                    "常言道：“书山有路勤为径”。"
+                ],
+                bmOptions: [
+                    "Kamus menceritakan rahsia ilmu secara senyap kepada kita.",
+                    "Hujan renyai bagaikan benang, ditenun rapat secara senget.",
+                    "Kamus ini sangat berat seperti sebuah gunung gergasi.",
+                    "Seperti kata peribahasa: \"Lautan ilmu tiada tebing, kerajinan jua jambatan\"."
+                ]
+            },
+            {
+                prompt: "例句：“俗话说：‘失败乃成功之母’，我们要勇敢面对困难。”（引用）",
+                bmPrompt: "Contoh: \"Seperti kata pepatah: 'Kegagalan ialah ibu kejayaan', kita perlu berani.\" (Sipatan)",
+                question: "请选出与例句【修辞手法不同】的句子：",
+                bmQuestion: "Sila pilih ayat yang menggunakan <strong>gaya bahasa yang berbeza (不同的修辞手法)</strong>与例句:",
+                answerIndex: 0,
+                options: [
+                    "花儿在晨风中摇曳，向我们颔首微笑。",
+                    "正所谓：“千里之行，始于足下”。",
+                    "爷爷常勉励我：“少壮不努力，老大徒伤悲”。",
+                    "古人云：“水滴石穿，绳锯木断”。"
+                ],
+                bmOptions: [
+                    "Bunga-bunga bergoyang dalam angin pagi, mengangguk dan tersenyum kepada kami.",
+                    "Seperti kata pepatah: \"Perjalanan ribuan batu bermula dengan langkah pertama\".",
+                    "Datuk sering menasihati saya: \"Masa muda tidak berusaha, masa tua menyesal\".",
+                    "Orang tua-tua berkata: \"Titisan air mampu menebuk batu\"."
+                ]
+            }
+        ];
+
+        const quiz3Data = [
+            { 
+                target: "比喻", 
+                bmTarget: "Kiasan / Simile",
+                prefix: "晚霞染红了天空，__________。", 
+                bmPrefix: "Awan senja memerah langit, _________.",
+                answerIndex: 0, 
+                options: ["好像一幅美丽的画卷", "害羞地躲进了云层里", "连天上的神仙都惊叹不已", "俗话说：“夕阳无限好”"],
+                bmOptions: [
+                    "seperti sebuah lukisan yang indah",
+                    "malu-malu bersembunyi di balik awan",
+                    "sehingga dewa di langit pun kagum",
+                    "seperti kata pepatah: \"Indahnya matahari terbenam\""
+                ]
+            },
+            { 
+                target: "比拟", 
+                bmTarget: "Personifikasi / Personification",
+                prefix: "到了秋天，秋风吹过，落叶__________。", 
+                bmPrefix: "Apabila musim luruh tiba dan angin bertiup, daun gugur _________.",
+                answerIndex: 1, 
+                options: ["像一只只黄蝴蝶翩翩起舞", "在空中跳起了优美的芭蕾舞", "多得把整条街道都淹没了", "正所谓：“落红不是无情物”"],
+                bmOptions: [
+                    "seperti rama-rama kuning menari",
+                    "menari tarian balet yang indah di udara",
+                    "begitu banyak sehingga menutupi seluruh jalan",
+                    "seperti kata pepatah: \"Bunga gugur bukannya tidak berjasa\""
+                ]
+            },
+            { 
+                target: "夸张", 
+                bmTarget: "Hiperbola / Exaggeration",
+                prefix: "听到这个惊人的消息，他瞪大了眼睛，__________。", 
+                bmPrefix: "Mendengar berita mengejutkan ini, matanya terbeliak, _________.",
+                answerIndex: 1, 
+                options: ["眼睛张得像铜铃一样大", "连眼珠子都快要掉出来了", "眼睛向我们诉说着心中的不安", "俗话说：“眼见为实”"],
+                bmOptions: [
+                    "seperti sebesar loceng gangsa",
+                    "sehinggakan biji mata hampir terjatuh",
+                    "matanya menceritakan kegelisahan di hati",
+                    "seperti kata pepatah: \"Melihat itu mempercayai\""
+                ]
+            },
+            { 
+                target: "引用", 
+                bmTarget: "Sipatan / Kutipan",
+                prefix: "面对困难时，我们不能轻易放弃，__________。", 
+                bmPrefix: "Apabila menghadapi kesukaran, kita tidak boleh mudah berputus asa, _________.",
+                answerIndex: 0, 
+                options: ["毕竟“失败乃成功之母”", "困难就像一座大山挡在前面", "困难正向我们发起猛烈的挑战", "困难多得像恒河里的沙子"],
+                bmOptions: [
+                    "kerana \"Kegagalan ialah ibu kejayaan\"",
+                    "kesukaran seperti gunung besar di hadapan",
+                    "kesukaran sedang mencabar kita dengan hebat",
+                    "kesukaran sebanyak pasir di Sungai Ganges"
+                ]
+            },
+            { 
+                target: "反复", 
+                bmTarget: "Pengulangan / Repetition",
+                prefix: "我们要向前进，__________，直到胜利为止！", 
+                bmPrefix: "Kita mesti maju ke hadapan, _________, sehingga mencapai kemenangan!",
+                answerIndex: 0, 
+                options: ["前进，前进", "像猛虎下山一样", "把前方的阻碍都摧毁掉", "俗话说：“勇者胜”"],
+                bmOptions: [
+                    "maju, maju",
+                    "seperti harimau turun dari gunung",
+                    "memusnahkan semua halangan di hadapan",
+                    "seperti kata pepatah: \"Orang berani pasti menang\""
+                ]
+            },
+            { 
+                target: "比喻", 
+                bmTarget: "Kiasan / Simile",
+                prefix: "弟弟笑起来，眼睛弯弯的，__________。", 
+                bmPrefix: "Apabila adik tersenyum, matanya melengkung, _________.",
+                answerIndex: 0, 
+                options: ["就像两弯可爱的小月牙", "兴奋地向大家打招呼", "声音响得能震破玻璃", "俗话说：“笑一笑，十年少”"],
+                bmOptions: [
+                    "seperti dua bentuk bulan sabit kecil yang comel",
+                    "dengan teruja menyapa semua orang",
+                    "suaranya kuat sehingga boleh memecahkan kaca",
+                    "seperti kata pepatah: \"Tersenyum membuatkan kita muda\""
+                ]
+            },
+            { 
+                target: "比拟", 
+                bmTarget: "Personifikasi / Personification",
+                prefix: "夜深了，街道安静下来，只有路灯__________。", 
+                bmPrefix: "Malam makin larut, jalan menjadi sunyi, hanya lampu jalan _________.",
+                answerIndex: 0, 
+                options: ["在默默地守护着这座城市", "像一盏盏微弱的明灯", "散发出把黑夜照成白昼的光芒", "古人说：“黑夜给了我眼睛”"],
+                bmOptions: [
+                    "menjaga bandar ini secara senyap",
+                    "seperti pelita yang redup",
+                    "memancarkan cahaya yang mengubah malam menjadi siang",
+                    "seperti kata pujangga: \"Malam memberi saya mata\""
+                ]
+            },
+            { 
+                target: "夸张", 
+                bmTarget: "Hiperbola / Exaggeration",
+                prefix: "比赛前夕，队长紧张得__________。", 
+                bmPrefix: "Pada malam sebelum pertandingan, kapten begitu gementar _________.",
+                answerIndex: 0, 
+                options: ["心脏快要从喉咙里跳出来了", "就像一只受惊的小兔子", "汗水在额头上唱起了歌", "正如“养兵千日，用兵一时”"],
+                bmOptions: [
+                    "sehingga jantungnya hampir melompat keluar dari kerongkong",
+                    "seperti anak arnab yang terperanjat",
+                    "peluh menyanyi di dahi",
+                    "seperti peribahasa: \"Bersedia untuk saat penting\""
+                ]
+            },
+            { 
+                target: "引用", 
+                bmTarget: "Sipatan / Kutipan",
+                prefix: "学习必须坚持不懈，因为__________。", 
+                bmPrefix: "Pembelajaran mesti diteruskan tanpa jemu, kerana _________.",
+                answerIndex: 0, 
+                options: ["“水滴石穿，绳锯木断”", "知识像海洋一样无边无际", "知识在向勤奋的人招手", "知识多得能把图书馆塞爆"],
+                bmOptions: [
+                    "\"Titisan air mampu menebuk batu\"",
+                    "ilmu seperti lautan yang tiada bertepi",
+                    "ilmu melambai kepada orang yang rajin",
+                    "ilmu begitu banyak sehingga memenuhkan perpustakaan"
+                ]
+            },
+            { 
+                target: "反复", 
+                bmTarget: "Pengulangan / Repetition",
+                prefix: "听，风在呼唤；__________，那是大自然的声音。", 
+                bmPrefix: "Dengar, angin sedang memanggil; _________, itulah suara alam semulajadi.",
+                answerIndex: 0, 
+                options: ["听，雨在倾诉", "雨像珍珠般落下", "雨把大地都冲洗得不留半点痕迹", "古人说：“听君一席话”"],
+                bmOptions: [
+                    "dengar, hujan sedang meluahkan perasaan",
+                    "hujan jatuh seperti mutiara",
+                    "hujan membasuh bumi tanpa tinggalkan kesan",
+                    "seperti kata pepatah: \"Mendengar nasihat mulia\""
+                ]
+            }
+        ];
+
+        const quiz4Data = [
+            { 
+                target: "【比喻】", 
+                bmTarget: "(Kiasan / Simile)",
+                answerIndex: 0, 
+                options: ["荷叶上的水珠就像散落的珍珠。", "荷花在风中款款舞蹈。", "这朵花香得把方圆十里的蜂蝶都吸引来了。", "“接天莲叶无穷碧”，荷花池真美丽。"],
+                bmOptions: [
+                    "Titisan air di atas daun teratai seperti mutiara yang bertaburan.",
+                    "Bunga teratai menari dengan anggun di dalam angin.",
+                    "Bunga ini sangat harum sehingga menarik lebah dan rama-rama dari jarak 10 batu.",
+                    "“Daun teratai hijau seluas mata memandang”, kolam teratai sungguh indah."
+                ]
+            },
+            { 
+                target: "【比拟】", 
+                bmTarget: "(Personifikasi / Personification)",
+                answerIndex: 0, 
+                options: ["小溪一路唱着欢快的歌儿奔向大海。", "小溪清澈得像一面镜子。", "小溪的水冷得能让人瞬间冻成冰块。", "俗话说：“水滴石穿”，我们要有恒心。"],
+                bmOptions: [
+                    "Anak sungai menyanyikan lagu riang sepanjang jalan menuju ke laut.",
+                    "Anak sungai jernih seperti cermin.",
+                    "Air anak sungai sangat sejuk sehingga boleh membekukan orang serta-merta.",
+                    "Seperti kata pepatah: \"Titisan air membelah batu\", kita mesti beristiqamah."
+                ]
+            },
+            { 
+                target: "【夸张】", 
+                bmTarget: "(Hiperbola / Exaggeration)",
+                answerIndex: 0, 
+                options: ["他的嗓门大得一喊能把楼房震塌。", "他的嗓门像喇叭一样响亮。", "喇叭在走廊里大声喧哗。", "正所谓：“响鼓不用重槌敲”。"],
+                bmOptions: [
+                    "Suaranya sangat nyaring sehingga sekali jerit boleh meruntuhkan bangunan.",
+                    "Suaranya nyaring seperti pembesar suara.",
+                    "Pembesar suara bising di laluan pejalan kaki.",
+                    "Seperti kata peribahasa: \"Orang yang pandai tidak perlu banyak diajar\"."
+                ]
+            },
+            { 
+                target: "【引用】", 
+                bmTarget: "(Sipatan / Kutipan)",
+                answerIndex: 0, 
+                options: ["老师常勉励我们：“少壮不努力，老大徒伤悲”。", "时间像流水一样一去不复返。", "时间脚步匆匆，从不为任何人停下。", "我忙得连眨眼的时间都没有。"],
+                bmOptions: [
+                    "Guru sering menasihati kami: \"Masa muda tidak berusaha, masa tua menyesal\".",
+                    "Masa seperti air mengalir yang tidak akan kembali.",
+                    "Masa melangkah tergesa-gesa, tidak pernah berhenti untuk sesiapa.",
+                    "Saya terlalu sibuk sehinggakan tiada masa untuk mengedipkan mata."
+                ]
+            },
+            { 
+                target: "【反复】", 
+                bmTarget: "(Pengulangan / Repetition)",
+                answerIndex: 0, 
+                options: ["盼望着，盼望着，春天的脚步终于近了。", "春天像一位美丽的姑娘来到了人间。", "春风轻轻拂过，抚摸着小草的头。", "春天美得能把神仙都吸引过来。"],
+                bmOptions: [
+                    "Tertunggu-tunggu, tertunggu-tunggu, langkah musim bunga akhirnya semakin dekat.",
+                    "Musim bunga seperti seorang gadis comel tiba di dunia.",
+                    "Angin musim bunga bertiup lembut, mengusap kepala rumput.",
+                    "Musim bunga begitu indah sehingga mampu memikat dewa."
+                ]
+            },
+            { 
+                target: "【比喻】", 
+                bmTarget: "(Kiasan / Simile)",
+                answerIndex: 0, 
+                options: ["茂密的树林仿佛一把撑开的绿伞。", "大树伸出双臂，庇护着下方的花草。", "这棵树高得连顶端都钻进了云彩里。", "俗话说：“前人种树，后人乘凉”。"],
+                bmOptions: [
+                    "Hutan yang lebat seolah-olah payung hijau yang terbuka.",
+                    "Pokok besar menghulurkan kedua-dua belah tangan melindungi bunga dan rumput di bawahnya.",
+                    "Pokok ini sangat tinggi sehingga puncaknya menembus awan.",
+                    "Seperti kata pepatah: \"Orang terdahulu menanam pokok, orang kemudian menikmati teduhan\"."
+                ]
+            },
+            { 
+                target: "【比拟】", 
+                bmTarget: "(Personifikasi / Personification)",
+                answerIndex: 0, 
+                options: ["淘气的雨点在窗户玻璃上弹奏着音乐。", "细雨蒙蒙，犹如一层薄薄的纱巾。", "雨下得极大，天地间仿佛挂着无数水柱。", "这场雨大得把整座山都冲走了。"],
+                bmOptions: [
+                    "Titisan hujan yang nakal memainkan muzik di cermin jendela.",
+                    "Hujan renyai bagaikan sehelai kain selendang nipis.",
+                    "Hujan sangat lebat, seolah-olah tergantung tiang-tiang air antara langit dan bumi.",
+                    "Hujan ini sangat lebat sehingga hanyutkan seluruh gunung."
+                ]
+            },
+            { 
+                target: "【夸张】", 
+                bmTarget: "(Hiperbola / Exaggeration)",
+                answerIndex: 0, 
+                options: ["这间教室小得连一只脚都放不下。", "教室干净得就像一间崭新的新房。", "课桌椅齐刷刷地欢迎同学们到来。", "“书山有路勤为径”，大家都在苦读。"],
+                bmOptions: [
+                    "Bilik darjah ini sangat kecil sehingga sebelah kaki pun tidak muat.",
+                    "Bilik darjah bersih seperti bilik yang baru.",
+                    "Meja dan kerusi menyambut kedatangan murid-murid.",
+                    "“Lautan ilmu tiada tebing, kerajinan jua jambatan”, semua orang gigih belajar."
+                ]
+            },
+            { 
+                target: "【反复】", 
+                bmTarget: "(Pengulangan / Repetition)",
+                answerIndex: 0, 
+                options: ["加油，加油，胜利就在前方！", "我们的口号像宏伟的战鼓般高昂。", "加油声震得连大地都颤抖起来。", "古人说：“众人拾柴火焰高”。"],
+                bmOptions: [
+                    "Chaiyo, chaiyo, kemenangan ada di hadapan!",
+                    "Slogan kita tinggi bagaikan gandingan drum perang.",
+                    "Sorakan bertiup kuat sehingga bumi bergetar.",
+                    "Seperti kata pepatah: \"Kerjasama membawa kejayaan\"."
+                ]
+            },
+            { 
+                target: "【引用】", 
+                bmTarget: "(Sipatan / Kutipan)",
+                answerIndex: 0, 
+                options: ["爷爷常说“百善孝为先”，提醒我们要孝顺父母。", "父母的爱就像温暖的阳光照耀着我们。", "岁月悄悄地在父母的额头上刻下了皱纹。", "父母为了我们操碎了心，白发多得数不清。"],
+                bmOptions: [
+                    "Datuk sering berkata \"Ketaatan kepada ibu bapa adalah yang utama\", mengingatkan kami agar berbakti.",
+                    "Kasih sayang ibu bapa seperti sinar matahari hangat yang menerangi kita.",
+                    "Masa dengan senyap mengukir kedutan di dahi ibu bapa.",
+                    "Ibu bapa terlalu risau akan kita, uban terlalu banyak sehingga tidak terkira."
+                ]
+            }
+        ];
+
+        // Speech Synthesis Helper: Filters out Malay translations and HTML tags to read Mandarin Chinese only!
+        function speakText(text, event = null) {
+            if (event) {
+                event.stopPropagation(); // Prevent selecting option when listening
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop any ongoing speech
+                // Strip markdown bold, HTML tags, and clean up for voice engine
+                const cleanText = text.replace(/<[^>]*>/g, '').replace(/\*/g, '').trim();
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = 'zh-CN'; // Chinese standard pronunciation
+                utterance.rate = 0.85; // Relaxed pace for students
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showToast("您的浏览器暂不支持语音朗读功能。");
+            }
+        }
+
+        // Render Stepper Navigation Tabs
+        function renderNavTabs() {
+            const navContainer = document.getElementById('navTabs');
+            if(!navContainer) return;
+            navContainer.innerHTML = '';
+            
+            navConfig.forEach((item, index) => {
+                const isUnlocked = unlockedSteps[index];
+                const isActive = (currentStep === index);
+                
+                const btn = document.createElement('button');
+                btn.disabled = !isUnlocked;
+                
+                let baseClass = "flex items-center space-x-1.5 px-3 py-1.5 rounded-lg transition text-xs whitespace-nowrap ";
+                if (isActive) {
+                    baseClass += "bg-white text-indigo-700 font-bold shadow-sm";
+                } else if (isUnlocked) {
+                    baseClass += "bg-white/10 hover:bg-white/20 text-white font-medium";
+                } else {
+                    baseClass += "bg-black/20 text-white/40 cursor-not-allowed font-normal";
+                }
+                
+                btn.className = baseClass;
+                btn.onclick = () => switchView(index);
+                
+                let lockIcon = !isUnlocked ? '<i class="fa-solid fa-lock text-[10px] ml-1 opacity-60"></i>' : '';
+                btn.innerHTML = `<i class="fa-solid ${item.icon}"></i><span>${item.label}</span>${lockIcon}`;
+                navContainer.appendChild(btn);
+            });
+        }
+
+        // Switch main active view
+        function switchView(step) {
+            if (!unlockedSteps[step]) return;
+            currentStep = step;
+            
+            document.getElementById('viewTutorial').classList.add('hidden');
+            document.getElementById('viewQuiz').classList.add('hidden');
+            document.getElementById('viewQuizResult').classList.add('hidden');
+            document.getElementById('viewReportCard').classList.add('hidden');
+            
+            renderNavTabs();
+            
+            if (step === 0) {
+                document.getElementById('viewTutorial').classList.remove('hidden');
+            } else if (step >= 1 && step <= 4) {
+                startQuiz(step);
+                document.getElementById('viewQuiz').classList.remove('hidden');
+            } else if (step === 5) {
+                renderReportCard();
+                document.getElementById('viewReportCard').classList.remove('hidden');
+            }
+        }
+
+        // Populate Tutorial Page with Malay Translations
+        function renderTutorials() {
+            const container = document.getElementById('tutorialCardsContainer');
+            container.innerHTML = '';
+
+            tutorialData.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-2xl p-5 shadow-sm border-t-4 border-${item.color}-500 border-x border-b border-slate-200 space-y-3`;
+
+                let examplesHTML = item.examples.map((ex, idx) => `
+                    <div class="flex items-start justify-between bg-slate-50 p-2.5 rounded-xl text-xs text-slate-700 border border-slate-100">
+                        <div class="mr-2 space-y-0.5">
+                            <div class="font-medium text-slate-800">${idx + 1}. ${ex.zh}</div>
+                            <div class="text-[11px] text-teal-700 font-normal italic">🇲🇾 ${ex.bm}</div>
+                        </div>
+                        <button onclick="speakText('${ex.zh.replace(/<[^>]*>/g, '').replace(/\*/g, '').replace(/'/g, "\\'")}', event)" class="text-${item.color}-600 hover:text-${item.color}-800 p-1 flex-shrink-0 active:scale-90 transition" title="朗读华文句子">
+                            <i class="fa-solid fa-volume-high text-sm"></i>
+                        </button>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-8 h-8 rounded-lg bg-${item.color}-100 text-${item.color}-600 flex items-center justify-center font-bold">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </span>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-lg leading-tight">${item.type}</h3>
+                                <div class="text-[10px] text-slate-400 font-medium">${item.bmType}</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-${item.color}-50 text-${item.color}-700 border border-${item.color}-200 px-2 py-0.5 rounded-md font-semibold">修辞方法</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">${item.desc}</p>
+                    <div class="space-y-1.5 pt-1">
+                        <div class="text-[11px] font-bold text-slate-400">例句说明（附 BM 翻译，点击 🔊 听华文发音）：</div>
+                        ${examplesHTML}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Initialize quiz for chosen step
+        function startQuiz(step) {
+            currentStep = step;
+            currentQuizIndex = 0;
+            currentScore = 0;
+            
+            if (step === 1) currentQuizData = quiz1Data;
+            else if (step === 2) currentQuizData = quiz2Data;
+            else if (step === 3) currentQuizData = quiz3Data;
+            else if (step === 4) currentQuizData = quiz4Data;
+
+            document.getElementById('quizBadge').innerText = navConfig[step].label;
+            document.getElementById('quizTitle').innerText = 
+                step === 1 ? "听读辨析修辞手法" :
+                step === 2 ? "相同/不同修辞辨析" :
+                step === 3 ? "补充指定修辞句子" : "综合修辞辨析选择";
+                
+            document.getElementById('quizTotalCount').innerText = currentQuizData.length;
+            renderQuestion();
+        }
+
+        // Render Current Question with Malay Translations & TTS Audio Buttons for All Questions and Options
+        function renderQuestion() {
+            currentSelectedOption = null;
+            document.getElementById('quizFeedback').classList.add('hidden');
+            
+            const btnNext = document.getElementById('btnNextQuestion');
+            btnNext.innerHTML = `<span>确认答案</span><i class="fa-solid fa-chevron-right"></i>`;
+            btnNext.onclick = submitAnswer;
+
+            document.getElementById('quizCurrentIndex').innerText = currentQuizIndex + 1;
+            const progressPct = ((currentQuizIndex + 1) / currentQuizData.length) * 100;
+            document.getElementById('quizProgressBar').style.width = `${progressPct}%`;
+
+            const container = document.getElementById('questionCard');
+            const item = currentQuizData[currentQuizIndex];
+
+            if (currentStep === 1) {
+                // Assessment 1: Listen/Read sentence, select rhetoric
+                container.innerHTML = `
+                    <div class="text-xs font-bold text-indigo-600 uppercase tracking-wide">题目 ${currentQuizIndex + 1}</div>
+                    <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-100 space-y-1">
+                        <div class="flex items-start justify-between space-x-3">
+                            <p class="text-slate-800 font-medium text-base leading-relaxed">${item.question}</p>
+                            <button onclick="speakText('${item.question.replace(/'/g, "\\'")}', event)" class="bg-indigo-600 text-white w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-md hover:bg-indigo-700 active:scale-95 transition" title="朗读华文句子">
+                                <i class="fa-solid fa-volume-high text-sm"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-teal-700 font-normal italic">🇲🇾 ${item.bm}</p>
+                    </div>
+                    <div class="text-xs text-slate-500 font-medium pt-1">请选择上述句子应用的修辞手法：</div>
+                    <div class="grid grid-cols-2 gap-2.5" id="optionsContainer">
+                        ${item.options.map((opt, i) => `
+                            <button onclick="selectOption(${i})" id="optBtn_${i}" class="option-btn p-3 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:border-indigo-400 hover:bg-indigo-50/40 transition flex items-center justify-between">
+                                <span>${opt}</span>
+                                <span onclick="speakText('${opt}', event)" class="text-indigo-600 hover:text-indigo-800 p-1" title="朗读选项">
+                                    <i class="fa-solid fa-volume-high text-xs"></i>
+                                </span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (currentStep === 2) {
+                // Assessment 2: Prompt sentence, choose same/different with clear BM
+                container.innerHTML = `
+                    <div class="text-xs font-bold text-indigo-600 uppercase tracking-wide">题目 ${currentQuizIndex + 1}</div>
+                    <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 space-y-0.5">
+                        <div class="flex items-start justify-between space-x-2">
+                            <p class="text-amber-950 font-bold text-sm">${item.prompt}</p>
+                            <button onclick="speakText('${item.prompt.replace(/<[^>]*>/g, '').replace(/\*/g, '').replace(/'/g, "\\'")}', event)" class="text-amber-700 hover:text-amber-900 p-1 flex-shrink-0" title="朗读华文例句">
+                                <i class="fa-solid fa-volume-high text-sm"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-amber-800 font-normal italic">🇲🇾 ${item.bmPrompt}</p>
+                    </div>
+                    <div class="space-y-0.5 pt-1">
+                        <p class="text-sm font-bold text-slate-800">${item.question}</p>
+                        <p class="text-xs text-teal-700 font-normal italic">🇲🇾 ${item.bmQuestion}</p>
+                    </div>
+                    <div class="space-y-2 pt-1" id="optionsContainer">
+                        ${item.options.map((opt, i) => `
+                            <button onclick="selectOption(${i})" id="optBtn_${i}" class="option-btn w-full p-3 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 text-left hover:border-indigo-400 hover:bg-indigo-50/40 transition">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-start mr-2">
+                                        <span class="inline-block w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-center text-[10px] leading-5 mr-2 font-bold flex-shrink-0">${String.fromCharCode(65+i)}</span>
+                                        <div>
+                                            <div class="font-bold text-slate-800">${opt}</div>
+                                            <div class="text-[11px] text-teal-700 font-normal italic mt-0.5">🇲🇾 ${item.bmOptions[i]}</div>
+                                        </div>
+                                    </div>
+                                    <span onclick="speakText('${opt.replace(/'/g, "\\'")}', event)" class="text-indigo-600 hover:text-indigo-800 p-1 flex-shrink-0" title="朗读选项">
+                                        <i class="fa-solid fa-volume-high text-sm"></i>
+                                    </span>
+                                </div>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (currentStep === 3) {
+                // Assessment 3: Complete sentence with specified rhetoric
+                container.innerHTML = `
+                    <div class="text-xs font-bold text-indigo-600 uppercase tracking-wide">题目 ${currentQuizIndex + 1}</div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1">
+                        <p class="text-xs text-slate-500">指定修辞手法：<span class="font-bold text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded">${item.target}</span> <span class="text-[11px] text-teal-700 italic ml-1">(${item.bmTarget})</span></p>
+                        <div class="flex items-start justify-between">
+                            <p class="text-slate-800 font-bold text-base mt-1">${item.prefix}</p>
+                            <button onclick="speakText('${item.prefix.replace(/'/g, "\\'")}', event)" class="text-indigo-600 hover:text-indigo-800 p-1 flex-shrink-0" title="朗读题干">
+                                <i class="fa-solid fa-volume-high text-sm"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-teal-700 font-normal italic">🇲🇾 ${item.bmPrefix}</p>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">请选择最符合指定的修辞手法的选项完成句子：</p>
+                    <div class="space-y-2" id="optionsContainer">
+                        ${item.options.map((opt, i) => `
+                            <button onclick="selectOption(${i})" id="optBtn_${i}" class="option-btn w-full p-3 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 text-left hover:border-indigo-400 hover:bg-indigo-50/40 transition">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-start mr-2">
+                                        <span class="inline-block w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-center text-[10px] leading-5 mr-2 font-bold flex-shrink-0">${String.fromCharCode(65+i)}</span>
+                                        <div>
+                                            <div class="font-bold text-slate-800">${opt}</div>
+                                            <div class="text-[11px] text-teal-700 font-normal italic mt-0.5">🇲🇾 ${item.bmOptions[i]}</div>
+                                        </div>
+                                    </div>
+                                    <span onclick="speakText('${opt.replace(/'/g, "\\'")}', event)" class="text-indigo-600 hover:text-indigo-800 p-1 flex-shrink-0" title="朗读选项">
+                                        <i class="fa-solid fa-volume-high text-sm"></i>
+                                    </span>
+                                </div>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (currentStep === 4) {
+                // Assessment 4: Which sentence uses [X]?
+                container.innerHTML = `
+                    <div class="text-xs font-bold text-indigo-600 uppercase tracking-wide">题目 ${currentQuizIndex + 1}</div>
+                    <div class="space-y-0.5">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-black text-slate-800">以下哪个句子应用了 <span class="text-indigo-600 underline">${item.target}</span> 的修辞手法？</p>
+                            <button onclick="speakText('以下哪个句子应用了 ${item.target} 的修辞手法？', event)" class="text-indigo-600 hover:text-indigo-800 p-1 flex-shrink-0" title="朗读题目">
+                                <i class="fa-solid fa-volume-high text-sm"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-teal-700 font-normal italic">🇲🇾 Ayat manakah yang menggunakan gaya bahasa <strong>${item.bmTarget}</strong>?</p>
+                    </div>
+                    <div class="space-y-2 pt-1" id="optionsContainer">
+                        ${item.options.map((opt, i) => `
+                            <button onclick="selectOption(${i})" id="optBtn_${i}" class="option-btn w-full p-3 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 text-left hover:border-indigo-400 hover:bg-indigo-50/40 transition">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-start mr-2">
+                                        <span class="inline-block w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-center text-[10px] leading-5 mr-2 font-bold flex-shrink-0">${String.fromCharCode(65+i)}</span>
+                                        <div>
+                                            <div class="font-bold text-slate-800">${opt}</div>
+                                            <div class="text-[11px] text-teal-700 font-normal italic mt-0.5">🇲🇾 ${item.bmOptions[i]}</div>
+                                        </div>
+                                    </div>
+                                    <span onclick="speakText('${opt.replace(/'/g, "\\'")}', event)" class="text-indigo-600 hover:text-indigo-800 p-1 flex-shrink-0" title="朗读选项">
+                                        <i class="fa-solid fa-volume-high text-sm"></i>
+                                    </span>
+                                </div>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        // Option selection handler
+        function selectOption(index) {
+            currentSelectedOption = index;
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, i) => {
+                if (i === index) {
+                    btn.className = btn.className.replace(/border-slate-200/g, 'border-indigo-600').replace(/bg-slate-50/g, 'bg-indigo-50');
+                    btn.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-50');
+                } else {
+                    btn.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-50');
+                }
+            });
+        }
+
+        function submitAnswerOrNext() {
+            submitAnswer();
+        }
+
+        // Submit Answer for current question
+        function submitAnswer() {
+            if (currentSelectedOption === null) {
+                const feedback = document.getElementById('quizFeedback');
+                feedback.className = "p-3 rounded-xl text-center text-xs font-bold bg-rose-100 text-rose-700 animate-bounce-short";
+                feedback.innerText = "⚠️ 请先选择一个答案再提交哦！";
+                feedback.classList.remove('hidden');
+                return;
+            }
+
+            const item = currentQuizData[currentQuizIndex];
+            let isCorrect = false;
+
+            if (currentStep === 1) {
+                isCorrect = (item.options[currentSelectedOption] === item.answer);
+            } else {
+                isCorrect = (currentSelectedOption === item.answerIndex);
+            }
+
+            if (isCorrect) currentScore++;
+
+            // Highlight buttons
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, idx) => {
+                btn.onclick = null; // Disable further clicks
+                let correctIndex = (currentStep === 1) ? item.options.indexOf(item.answer) : item.answerIndex;
+
+                if (idx === correctIndex) {
+                    btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                } else if (idx === currentSelectedOption && !isCorrect) {
+                    btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                }
+            });
+
+            // Show Feedback Toast
+            const feedback = document.getElementById('quizFeedback');
+            feedback.classList.remove('hidden');
+            if (isCorrect) {
+                feedback.className = "p-3 rounded-xl text-center text-xs font-bold bg-emerald-100 text-emerald-800";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> 回答正确！太棒了！`;
+            } else {
+                feedback.className = "p-3 rounded-xl text-center text-xs font-bold bg-rose-100 text-rose-800";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1"></i> 回答错误，再接再厉！`;
+            }
+
+            // Update Next Button
+            const btnNext = document.getElementById('btnNextQuestion');
+            if (currentQuizIndex < currentQuizData.length - 1) {
+                btnNext.innerHTML = `<span>下一题</span><i class="fa-solid fa-arrow-right"></i>`;
+                btnNext.onclick = nextQuestion;
+            } else {
+                btnNext.innerHTML = `<span>查看本关成绩</span><i class="fa-solid fa-trophy"></i>`;
+                btnNext.onclick = finishQuiz;
+            }
+        }
+
+        function nextQuestion() {
+            currentQuizIndex++;
+            renderQuestion();
+        }
+
+        // Finish Quiz & Check Pass Threshold
+        function finishQuiz() {
+            quizScores[currentStep] = currentScore;
+            const totalQ = currentQuizData.length;
+            const passThreshold = Math.floor(totalQ / 2) + 1; // Correct > 50% required
+            const isPassed = currentScore >= passThreshold;
+
+            document.getElementById('viewQuiz').classList.add('hidden');
+            document.getElementById('viewQuizResult').classList.remove('hidden');
+
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const desc = document.getElementById('resultDesc');
+            const scoreDisplay = document.getElementById('resultScore');
+            const statusTag = document.getElementById('resultStatusTag');
+            const actions = document.getElementById('resultActions');
+
+            scoreDisplay.innerText = `${currentScore} / ${totalQ}`;
+
+            if (isPassed) {
+                icon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl bg-emerald-100 text-emerald-600";
+                icon.innerHTML = `<i class="fa-solid fa-award"></i>`;
+                title.innerText = "恭喜成功通关！🎉";
+                title.className = "text-2xl font-bold text-emerald-700";
+                desc.innerText = `你在【${navConfig[currentStep].label}】中答对了 ${currentScore} 题，达到了通关标准（正确率过半，需对 ${passThreshold} 题及以上）。`;
+                statusTag.innerText = "状态：已通关并解锁下一关";
+                statusTag.className = "text-xs font-bold text-emerald-600";
+
+                unlockedSteps[currentStep + 1] = true; // Unlock next step
+                renderNavTabs();
+
+                actions.innerHTML = `
+                    <button onclick="switchView(${currentStep + 1})" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg active:scale-95 transition flex items-center justify-center space-x-2">
+                        <span>${currentStep === 4 ? '前往生成成绩单' : '进入下一关评估'}</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button onclick="startQuiz(${currentStep}); switchView(${currentStep});" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs transition">
+                        重新挑战本关
+                    </button>
+                `;
+            } else {
+                icon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl bg-rose-100 text-rose-600";
+                icon.innerHTML = `<i class="fa-solid fa-rotate-right"></i>`;
+                title.innerText = "未达标，需重考 😅";
+                title.className = "text-2xl font-bold text-rose-700";
+                desc.innerText = `本关需正确回答过半数习题（至少 ${passThreshold} 题）才可解锁下一页。加油，再试一次吧！`;
+                statusTag.innerText = "状态：未通过，需重复练习";
+                statusTag.className = "text-xs font-bold text-rose-600";
+
+                actions.innerHTML = `
+                    <button onclick="startQuiz(${currentStep}); switchView(${currentStep});" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg active:scale-95 transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>重新挑战本评估</span>
+                    </button>
+                    <button onclick="switchView(0)" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs transition">
+                        返回学习天地温习
+                    </button>
+                `;
+            }
+        }
+
+        // Unlock Step 1 manually from Tutorial
+        function unlockAndGoNext(current) {
+            unlockedSteps[current + 1] = true;
+            switchView(current + 1);
+        }
+
+        // Render Final Report Card
+        function renderReportCard() {
+            const today = new Date();
+            const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+            document.getElementById('reportDate').innerText = `完成日期：${dateStr}`;
+
+            const breakdown = document.getElementById('reportBreakdown');
+            breakdown.innerHTML = '';
+
+            let totalObtained = 0;
+            let totalMax = 40; // 10 + 10 + 10 + 10 = 40 questions total
+
+            const quizMeta = [
+                { title: "评估一：听读辨析", max: 10 },
+                { title: "评估二：异同比较", max: 10 },
+                { title: "评估三：补充句子", max: 10 },
+                { title: "评估四：综合选择", max: 10 }
+            ];
+
+            quizMeta.forEach((meta, idx) => {
+                const score = quizScores[idx + 1] || 0;
+                totalObtained += score;
+
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-xs";
+                row.innerHTML = `
+                    <span class="font-bold text-slate-700">${meta.title}</span>
+                    <span class="font-extrabold text-indigo-600">${score} / ${meta.max} 分</span>
+                `;
+                breakdown.appendChild(row);
+            });
+
+            document.getElementById('reportTotalScore').innerText = `${totalObtained} / ${totalMax} 分`;
+
+            // Title rating calculation
+            const masterTitle = document.getElementById('reportMasterTitle');
+            if (totalObtained >= 36) {
+                masterTitle.innerText = "金牌修辞小大师 🌟";
+            } else if (totalObtained >= 28) {
+                masterTitle.innerText = "银牌修辞小能手 ✨";
+            } else {
+                masterTitle.innerText = "铜牌修辞新星 🎈";
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            if (!toast || !toastMsg) return;
+            toastMsg.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Reset All Progress Modal Controls
+        function resetAllProgress() {
+            document.getElementById('resetModal').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            document.getElementById('resetModal').classList.add('hidden');
+        }
+
+        function confirmResetAllProgress() {
+            closeResetModal();
+            unlockedSteps = [true, false, false, false, false, false];
+            quizScores = [0, 0, 0, 0, 0];
+            switchView(0);
+            showToast("已成功重置进度与成绩！");
+        }
+
+        // Initialize on Window Load
+        window.onload = function() {
+            renderTutorials();
+            renderNavTabs();
+        };
+    </script>
+</body>
+</html>
